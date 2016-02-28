@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
+var session = require('express-session');
 var app = express();
 
 // view engine setup
@@ -46,6 +47,13 @@ if (app.get('env') === 'development') {
   });
 }
 
+app.set('trust proxy', 1); // trust first proxy
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
